@@ -36,7 +36,7 @@ The solution consists of the following components:
 - [Service 2](https://github.com/k8-proxy/k8-go-srv2)
 - [Processing Service.](https://github.com/k8-proxy/go-k8s-process)
 - [Controller Service.](https://github.com/k8-proxy/go-k8s-controller)
-- Components related to ICAP server,  transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
+- Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
 
 
 ## Build
