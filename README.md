@@ -23,7 +23,7 @@ The work here is a continuation and enhancement over: https://github.com/k8-prox
 ## Version v0.x:
 
 ### Solution diagram
-![Solution Diagram](https://github.com/k8-proxy/go-k8s-infra/diagram/go-k8s-infra.png)
+![Solution Diagram](https://github.com/k8-proxy/go-k8s-infra/raw/main/diagram/go-k8s-infra.png)
 ### Enhancements
 The solution provides the following enhancements:
 - Using MinIO instead of local storage for the processing pods.
