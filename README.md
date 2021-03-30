@@ -41,18 +41,25 @@ The solution consists of the following components:
 
 ## Setup
 
+- Build a vm from an icap-server AMI with minio installed. Example AMI : ami-099a48891215f2699
+
 - Scale the existing adaptation service to 0
 ```
 kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
 ```
 
+- Export minio tls cert 
+```
+kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | base64 --decode > /tmp/minio-cert.pem
+```
+
+- Import to adaptation service as a configmap 
+```
+kubectl -n icap-adaptation create configmap minio-cert — from-file=/tmp/minio-cert.pem
+```
 
 ## Test
 
-For testing, run `<Testing Commands>`
+For testing, try to rebuild a file
 
-
-## Video Demo
-
-< Add video demo link here >
 
