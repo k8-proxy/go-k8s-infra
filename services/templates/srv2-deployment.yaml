@@ -3,13 +3,6 @@ kind: Deployment
 metadata:
   name: {{ .Values.srv2.name }}
 spec:
-  volumes:
-      - name: target-vol
-        persistentVolumeClaim:
-          claimName: glasswalltarget-pvc
-      - name: minio-cert
-        configMap:
-          name: minio-cert
   replicas: {{ .Values.srv2.replicas }}
   selector:
     matchLabels:
@@ -19,6 +12,13 @@ spec:
       labels:
         app: {{ .Values.srv2.name }}
     spec:
+      volumes:
+      - name: target-vol
+        persistentVolumeClaim:
+          claimName: glasswalltarget-pvc
+      - name: minio-cert
+        configMap:
+          name: minio-cert
       containers:
       - name: srv2
         image: {{ .Values.imagestore.srv2.registry }}{{ .Values.imagestore.srv2.repository }}:{{ .Values.imagestore.srv2.tag }}
