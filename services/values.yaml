@@ -34,3 +34,7 @@ imagestore:
     registry: ""
     repository: azopat/icap-service3
     tag: latest
+volumemountpath:
+  source: "/var/source"
+  target: "/var/target"
+  transactions: /mnt/transactions
