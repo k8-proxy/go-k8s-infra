@@ -55,7 +55,17 @@ kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | bas
 
 - Import to adaptation service as a configmap 
 ```
-kubectl -n icap-adaptation create configmap minio-cert — from-file=/tmp/minio-cert.pem
+kubectl -n icap-adaptation create configmap minio-cert --from-file=/tmp/minio-cert.pem
+```
+
+- Create minio credentials secret
+```
+kubectl create -n icap-adaptation secret generic minio-credentials --from-literal=username='<minio-user>' --from-literal=password='<minio-password>'
+```
+
+- Create minio credentials secret
+```
+helm upgrade servicesv2 --install . --namespace icap-adaptation
 ```
 
 ## Test
