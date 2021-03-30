@@ -39,11 +39,11 @@ The solution consists of the following components:
 - Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
 
 
-## Build
+## Setup
 
-- <Placeholder, fill in at the next PR>
+- Scale the existing adaptation service to 0
 ```
-code placeholder
+kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
 ```
 
 

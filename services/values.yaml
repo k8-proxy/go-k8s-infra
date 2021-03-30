@@ -1,0 +1,36 @@
+environment:
+podcontroller:
+  name: pod-controller
+  namespace: icap-adaptation
+  rolename: pod-controller-role
+  saname: pod-controller-sa
+  replicas: 1
+  processimage: azopat/icap-service2
+srv1:
+  name: srv1
+  replicas: 1
+srv2:
+  name: srv2
+  replicas: 1
+queue:
+  adaptationRequest:
+    hostname: "rabbitmq-service"
+    port: "\"5672\""
+minio:
+  adaptationRequest:
+    endpoint: "minio-ss-0-0.minio-hl.minio.svc.cluster.local:9000"
+    sourcebucket: "sourcefiles"
+    processedbucket: "cleanfiles"
+imagestore:
+  podcontroller:
+    registry: ""
+    repository: azopat/pod-controller
+    tag: 1.0
+  srv1:
+    registry: ""
+    repository: azopat/icap-service1
+    tag: latest
+  srv2:
+    registry: ""
+    repository: azopat/icap-service3
+    tag: latest
