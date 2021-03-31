@@ -28,7 +28,7 @@ imagestore:
     tag: "1.0"
   srv1:
     registry: ""
-    repository: azopat/icap-service1
+    repository: azopat/srv1
     tag: latest
   srv2:
     registry: ""
