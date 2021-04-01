@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.srv1.name }}
+spec:
+  replicas: {{ .Values.srv1.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.srv1.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.srv1.name }}
+    spec:
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+          claimName: glasswallsource-pvc
+      - name: minio-cert
+        configMap:
+          name: minio-cert
+      containers:
+      - name: srv1
+        image: {{ .Values.imagestore.srv1.registry }}{{ .Values.imagestore.srv1.repository }}:{{ .Values.imagestore.srv1.tag }}
+        volumeMounts:
+        - mountPath: {{ .Values.volumemountpath.source }}
+          name: source-vol
+        - name: minio-cert
+          mountPath: /etc/ssl/certs/minio-cert.pem
+          subPath: minio-cert.pem
+          readOnly: false
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: INPUT_MOUNT
+          value: {{ .Values.volumemountpath.source }}
+        - name: MESSAGE_BROKER_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: rabbitmq-service-default-user
+        - name: MESSAGE_BROKER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: rabbitmq-service-default-user
+        - name: ADAPTATION_REQUEST_QUEUE_HOSTNAME
+          value: {{ .Values.queue.adaptationRequest.hostname }}
+        - name: ADAPTATION_REQUEST_QUEUE_PORT
+          value: {{ .Values.queue.adaptationRequest.port }}
+        - name: MINIO_ENDPOINT
+          value: {{ .Values.minio.adaptationRequest.endpoint }}
+        - name: MINIO_SOURCE_BUCKET
+          value: {{ .Values.minio.adaptationRequest.sourcebucket }}
+        - name: MINIO_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: minio-credentials
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: minio-credentials
