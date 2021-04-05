@@ -21,6 +21,8 @@ spec:
           value: "5"
         - name: PROCESS_IMAGE
           value: {{ .Values.podcontroller.processimage }}
+        - name: MINIO_ENDPOINT
+          value: {{ .Values.minio.adaptationRequest.endpoint }}
         - name: MINIO_USER
           valueFrom:
             secretKeyRef:

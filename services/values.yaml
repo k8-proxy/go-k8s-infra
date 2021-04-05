@@ -5,7 +5,7 @@ podcontroller:
   rolename: pod-controller-role
   saname: pod-controller-sa
   replicas: 1
-  processimage: azopat/icap-service2
+  processimage: azopat/go-k8s-process
 srv1:
   name: srv1
   replicas: 1
@@ -18,21 +18,21 @@ queue:
     port: "\"5672\""
 minio:
   adaptationRequest:
-    endpoint: "minio-ss-0-0.minio-hl.minio.svc.cluster.local:9000"
+    endpoint: "minio-endpoint.minio.svc.cluster.local:9000"
     sourcebucket: "sourcefiles"
     processedbucket: "cleanfiles"
 imagestore:
   podcontroller:
     registry: ""
-    repository: azopat/pod-controller
-    tag: "1.0"
+    repository: azopat/go-k8s-controller
+    tag: latest
   srv1:
     registry: ""
-    repository: azopat/srv1
+    repository: azopat/go-k8s-srv1
     tag: latest
   srv2:
     registry: ""
-    repository: azopat/icap-service3
+    repository: azopat/go-k8s-srv2
     tag: latest
 volumemountpath:
   source: "/var/source"
