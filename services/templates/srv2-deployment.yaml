@@ -16,19 +16,12 @@ spec:
       - name: target-vol
         persistentVolumeClaim:
           claimName: glasswalltarget-pvc
-      - name: minio-cert
-        configMap:
-          name: minio-cert
       containers:
       - name: srv2
         image: {{ .Values.imagestore.srv2.registry }}{{ .Values.imagestore.srv2.repository }}:{{ .Values.imagestore.srv2.tag }}
         volumeMounts:
         - mountPath: {{ .Values.volumemountpath.target }}
           name: target-vol
-        - name: minio-cert
-          mountPath: /etc/ssl/certs/minio-cert.pem
-          subPath: minio-cert.pem
-          readOnly: false
         env:
         - name: POD_NAMESPACE
           valueFrom:
