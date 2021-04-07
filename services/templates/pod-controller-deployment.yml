@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.podcontroller.name }}
+spec:
+  replicas: {{ .Values.podcontroller.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.podcontroller.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.podcontroller.name }}
+    spec:
+      serviceAccountName: {{ .Values.podcontroller.saname }}
+      containers:
+      - name: pod-controller
+        image: {{ .Values.imagestore.podcontroller.registry}}{{ .Values.imagestore.podcontroller.repository }}:{{ .Values.imagestore.podcontroller.tag }}
+        env:
+        - name: POD_COUNT
+          value: "5"
+        - name: PROCESS_IMAGE
+          value: {{ .Values.podcontroller.processimage }}
+        - name: MINIO_ENDPOINT
+          value: {{ .Values.minio.adaptationRequest.endpoint }}
+        - name: MINIO_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: minio-credentials
+        - name: MINIO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: minio-credentials
