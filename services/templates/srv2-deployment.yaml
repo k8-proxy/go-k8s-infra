@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.srv2.name }}
+spec:
+  replicas: {{ .Values.srv2.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.srv2.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.srv2.name }}
+    spec:
+      volumes:
+      - name: target-vol
+        persistentVolumeClaim:
+          claimName: glasswalltarget-pvc
+      containers:
+      - name: srv2
+        image: {{ .Values.imagestore.srv2.registry }}{{ .Values.imagestore.srv2.repository }}:{{ .Values.imagestore.srv2.tag }}
+        volumeMounts:
+        - mountPath: {{ .Values.volumemountpath.target }}
+          name: target-vol
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: INPUT_MOUNT
+          value: {{ .Values.volumemountpath.source }}
+        - name: OUTPUT_MOUNT
+          value: {{ .Values.volumemountpath.target }}
+        - name: MESSAGE_BROKER_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: rabbitmq-service-default-user
+        - name: MESSAGE_BROKER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: rabbitmq-service-default-user
+        - name: ADAPTATION_REQUEST_QUEUE_HOSTNAME
+          value: {{ .Values.queue.adaptationRequest.hostname }}
+        - name: ADAPTATION_REQUEST_QUEUE_PORT
+          value: {{ .Values.queue.adaptationRequest.port }}

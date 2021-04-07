@@ -1,0 +1,40 @@
+environment:
+podcontroller:
+  name: pod-controller
+  namespace: icap-adaptation
+  rolename: pod-controller-role
+  saname: pod-controller-sa
+  replicas: 1
+  processimage: azopat/go-k8s-process
+srv1:
+  name: srv1
+  replicas: 1
+srv2:
+  name: srv2
+  replicas: 1
+queue:
+  adaptationRequest:
+    hostname: "rabbitmq-service"
+    port: "\"5672\""
+minio:
+  adaptationRequest:
+    endpoint: "minio-endpoint.minio.svc.cluster.local:9000"
+    sourcebucket: "sourcefiles"
+    processedbucket: "cleanfiles"
+imagestore:
+  podcontroller:
+    registry: ""
+    repository: azopat/go-k8s-controller
+    tag: latest
+  srv1:
+    registry: ""
+    repository: azopat/go-k8s-srv1
+    tag: latest
+  srv2:
+    registry: ""
+    repository: azopat/go-k8s-srv2
+    tag: latest
+volumemountpath:
+  source: "/var/source"
+  target: "/var/target"
+  transactions: /mnt/transactions
