@@ -38,9 +38,21 @@ The solution consists of the following components:
 - [Controller Service.](https://github.com/k8-proxy/go-k8s-controller)
 - Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
 
+###
+VM configuration needed for this setup to run smoothly 
+- 4 vCPU
+- 4 GB RAM
+- 50 GB Storage volume
+
+On aws recommended instance type 
+- t2.xlarge
+
+Perform following steps with becommning sudo user 
+```
+sudo su
+```
 
 ## Setup from scratch
-
 - Install k8s
 
 ```
@@ -169,16 +181,6 @@ git clone https://github.com/k8-proxy/go-k8s-infra.git -b azopat-tmp && cd go-k8
 - Scale the existing adaptation service to 0
 ```
 kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
-```
-
-- Export minio tls cert 
-```
-kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | base64 --decode > /tmp/minio-cert.pem
-```
-
-- Import to adaptation service as a configmap 
-```
-kubectl -n icap-adaptation create configmap minio-cert --from-file=/tmp/minio-cert.pem
 ```
 
 - Create minio credentials secret
