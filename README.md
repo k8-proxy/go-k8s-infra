@@ -202,6 +202,7 @@ kubectl port-forward $POD_NAME 9000 --namespace minio
 go to browser and access the minio console with http://127.0.0.1:9000 / http://machine-ip:9000 
 
 and credentails is accesskey and secret you have pass when deploying minio .
+once you are in minio UI create an bucket 1) sourcefiles and 2) cleanfiles
 ```
 - Process the Pdf file and check the logs of minio 
 ```
