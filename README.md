@@ -47,7 +47,7 @@ VM configuration needed for this setup to run smoothly
 On aws recommended instance type 
 - t2.xlarge
 
-Perform following steps with becommning sudo user 
+Perform following steps with sudo user 
 ```
 sudo su
 ```
