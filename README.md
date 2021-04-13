@@ -111,7 +111,7 @@ kubectl create ns minio
 ```
 # Install minio 
 helm repo add minio https://helm.min.io/
-helm install --set accessKey=<minio-user>,secretKey=<minio-password> --generate-name minio/minio
+helm install --set accessKey=<minio-user>,secretKey=<minio-password> minio-server minio/minio --namespace minio
 ```
 ```
 # install docker registry credentials
@@ -195,7 +195,7 @@ helm upgrade servicesv2 --install . --namespace icap-adaptation
 
 - Create bucket on minio by accessing the minio console
 ```
-export POD_NAME=$(kubectl get pods --namespace minio -l "release=minio-1617643223" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace minio -l "release=minio-server" -o jsonpath="{.items[0].metadata.name}")
 
 kubectl port-forward $POD_NAME 9000 --namespace minio
 
