@@ -175,7 +175,7 @@ cd ~
 ```
 ```
 # Clone go-k8s-infra repo
-git clone https://github.com/k8-proxy/go-k8s-infra.git -b azopat-tmp && cd go-k8s-infra/services
+git clone https://github.com/k8-proxy/go-k8s-infra.git -b develop && cd go-k8s-infra/services
 ```
 
 - Scale the existing adaptation service to 0
