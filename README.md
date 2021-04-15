@@ -38,9 +38,21 @@ The solution consists of the following components:
 - [Controller Service.](https://github.com/k8-proxy/go-k8s-controller)
 - Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
 
+###
+VM configuration needed for this setup to run smoothly 
+- 4 vCPU
+- 4 GB RAM
+- 50 GB Storage volume
+
+On aws recommended instance type 
+- t2.xlarge
+
+Perform following steps with sudo user 
+```
+sudo su
+```
 
 ## Setup from scratch
-
 - Install k8s
 
 ```
@@ -99,7 +111,7 @@ kubectl create ns minio
 ```
 # Install minio 
 helm repo add minio https://helm.min.io/
-helm install --set accessKey=<minio-user>,secretKey=<minio-password> --generate-name minio/minio
+helm install --set accessKey=<minio-user>,secretKey=<minio-password> minio-server minio/minio --namespace minio
 ```
 ```
 # install docker registry credentials
@@ -163,22 +175,12 @@ cd ~
 ```
 ```
 # Clone go-k8s-infra repo
-git clone https://github.com/k8-proxy/go-k8s-infra.git -b azopat-tmp && cd go-k8s-infra/services
+git clone https://github.com/k8-proxy/go-k8s-infra.git -b develop && cd go-k8s-infra/services
 ```
 
 - Scale the existing adaptation service to 0
 ```
 kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
-```
-
-- Export minio tls cert 
-```
-kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | base64 --decode > /tmp/minio-cert.pem
-```
-
-- Import to adaptation service as a configmap 
-```
-kubectl -n icap-adaptation create configmap minio-cert --from-file=/tmp/minio-cert.pem
 ```
 
 - Create minio credentials secret
@@ -193,13 +195,14 @@ helm upgrade servicesv2 --install . --namespace icap-adaptation
 
 - Create bucket on minio by accessing the minio console
 ```
-export POD_NAME=$(kubectl get pods --namespace minio -l "release=minio-1617643223" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace minio -l "release=minio-server" -o jsonpath="{.items[0].metadata.name}")
 
 kubectl port-forward $POD_NAME 9000 --namespace minio
 
 go to browser and access the minio console with http://127.0.0.1:9000 / http://machine-ip:9000 
 
 and credentails is accesskey and secret you have pass when deploying minio .
+once you are in minio UI create an bucket 1) sourcefiles and 2) cleanfiles
 ```
 - Process the Pdf file and check the logs of minio 
 ```
