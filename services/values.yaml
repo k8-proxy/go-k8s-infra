@@ -5,7 +5,6 @@ podcontroller:
   rolename: pod-controller-role
   saname: pod-controller-sa
   replicas: 1
-  processimage: "azopat/go-k8s-process:main"
 srv1:
   name: srv1
   replicas: 1
@@ -28,11 +27,15 @@ imagestore:
     tag: latest
   srv1:
     registry: ""
-    repository: azopat/go-k8s-srv1
+    repository: glasswallsolutions/go-k8s-srv1
     tag: main
   srv2:
     registry: ""
-    repository: azopat/go-k8s-srv2
+    repository: glasswallsolutions/go-k8s-srv2
+    tag: main
+  process:
+    registry: ""
+    repository: glasswallsolutions/go-k8s-process
     tag: main
 volumemountpath:
   source: "/var/source"
