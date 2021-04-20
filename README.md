@@ -146,9 +146,9 @@ helm upgrade servicesv2 --install . --namespace icap-adaptation
 ### Execution
 - Open the link https://github.com/k8-proxy/GW-Releases/actions/workflows/icap-server.yaml
 - Click on "Run workflow" as on the screenshot
-![Run workflow](https://github.com/k8-proxy/go-k8s-infra/raw/main/diagram/run_workflow.png)
+![Run workflow](imgs/run_workflow.png)
 - Once it's completed the AMI will be available in the logs
-![Workflow logs](https://github.com/k8-proxy/go-k8s-infra/raw/main/diagram/workflow_logs.png)
+![Workflow logs](imgs/workflow_logs.png)
 
 ## Test
 
