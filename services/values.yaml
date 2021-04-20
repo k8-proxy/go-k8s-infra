@@ -5,7 +5,7 @@ podcontroller:
   rolename: pod-controller-role
   saname: pod-controller-sa
   replicas: 1
-  processimage: himanshu2464/go-k8s-process:v2
+  processimage: k8serviceaccount/go-k8s-process
 srv1:
   name: srv1
   replicas: 1
@@ -24,16 +24,20 @@ minio:
 imagestore:
   podcontroller:
     registry: ""
-    repository: azopat/go-k8s-controller
+    repository: k8serviceaccount/go-k8s-controller
     tag: latest
   srv1:
     registry: ""
-    repository: himanshu2464/go-k8s-srv1
-    tag: v2
+    repository: k8serviceaccount/go-k8s-srv1
+    tag: latest
   srv2:
     registry: ""
-    repository: himanshu2464/go-k8s-srv2
-    tag: v3
+    repository: k8serviceaccount/go-k8s-srv2
+    tag: latest
+  process:
+    registry: ""
+    repository: k8serviceaccount/go-k8s-process
+    tag: latest
 volumemountpath:
   source: "/var/source"
   target: "/var/target"

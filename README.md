@@ -243,6 +243,53 @@ kubectl create -n icap-adaptation secret generic minio-credentials --from-litera
 helm upgrade servicesv2 --install . --namespace icap-adaptation
 ```
 
+## How to Create AMI
+### Workflow
+
+- Create the ami is done by triggering the icap-server(https://github.com/k8-proxy/GW-Releases/actions?query=workflow%3Aicap-server) workflow
+
+- There are 2 main jobs for that workflow:
+    - build-ami
+        - Configure AWS credentials
+        - Setup Packer
+        - Build AMI 
+
+    ![build-ami](imgs/build-ami.png)
+    
+    - deploy-ami
+        - Get current instance ID
+        - Deploy AMI to dev
+        - Run tests on instance
+        - Delete instance(s) that fail
+
+    ![deploy-ami](imgs/deploy-ami.png)
+
+### Workflow Requirements
+    - branch to use workflow from
+    - AWS region(s) where AMI will be created
+    - IP of monitoring server
+
+
+### Workflow Detail
+- [YAML File](https://github.com/k8-proxy/GW-Releases/blob/main/.github/workflows/icap-server.yaml) 
+- build AMI
+    - Configure AWS credentials
+    - Setup [Packer](https://github.com/k8-proxy/vmware-scripts/tree/main/packer)
+    - Build AMI using Packer 
+- deploy AMI
+    - Get current instance ID and other instance IDs with the same name as current instance
+    - Deploy the instance
+    - Run [healthcheck tests](https://github.com/k8-proxy/vmware-scripts/tree/f129ec357284c61206edf36415b1b2ba403bff95/HealthCheck) on the instance
+        - if tests are successful for current instance, all previous instances are terminated
+        - if tests are failed, current instance is terminated and deleted
+
+### Execution
+- Open the link https://github.com/k8-proxy/GW-Releases/actions/workflows/icap-server.yaml
+- Click on "Run workflow" as on the screenshot
+![Run workflow](imgs/run_workflow.png)
+- Once it's completed the AMI will be available in the logs
+![Workflow logs](imgs/workflow_logs.png)
+
 ## Test
 
 For testing, try to rebuild a file
