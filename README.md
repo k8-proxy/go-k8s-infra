@@ -243,7 +243,7 @@ Latest ICAP AMI : ami-08eb467551ac8b5d6
 
 - Get the Public IP of the instance
 
-## How to Build a new AMI
+## How to Create AMI
 ### Workflow
 
 - Create the ami is done by triggering the icap-server(https://github.com/k8-proxy/GW-Releases/actions?query=workflow%3Aicap-server) workflow
@@ -293,5 +293,3 @@ Latest ICAP AMI : ami-08eb467551ac8b5d6
 ## Test
 
 For testing, try to rebuild a file
-
-
