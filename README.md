@@ -52,7 +52,7 @@ Perform following steps with sudo user
 sudo su
 ```
 
-## Setup from scratch
+## Development Setup
 - Install k8s
 
 ```
@@ -214,34 +214,34 @@ kubectl logs -f <pod-name> -n icap-adaptation
 ex: kubectl logs -f srv1-94fd6cc74-bqjhs -n icap-adaptation
 ```
 
-## Setup
+## Production Setup
 
-- Deploy a vm from an icap-server AMI with minio installed. Example AMI : ami-099a48891215f2699
+Latest ICAP AMI : ami-08eb467551ac8b5d6
 
-- Scale the existing adaptation service to 0
-```
-kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
-```
 
-- Export minio tls cert 
-```
-kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | base64 --decode > /tmp/minio-cert.pem
-```
+- Login to aws console https://aws.amazon.com/console/
 
-- Import to adaptation service as a configmap 
-```
-kubectl -n icap-adaptation create configmap minio-cert --from-file=/tmp/minio-cert.pem
-```
+- Go to EC2 service
 
-- Create minio credentials secret
-```
-kubectl create -n icap-adaptation secret generic minio-credentials --from-literal=username='<minio-user>' --from-literal=password='<minio-password>'
-```
+- Choose Ireland, "eu-west-1" region
 
-- Apply helm chart to create the services
-```
-helm upgrade servicesv2 --install . --namespace icap-adaptation
-```
+- Search for "AMI" under "Images" by entering the ami above
+
+- Click on "Launch" button
+
+- Select below configarature for next steps (available on bottom right corner):
+        
+    - Choose Instance Type         :     t2.2xlarge 
+    - Configure Instance Details   :     The amount of requested instances 
+    - Add Storage (disk space)     :     At least 50G
+    - Add Tags                     :     Put the vm tags
+    - Configure Security Group     :     Choose to select from existing groups, and select *launch-wizard-8*
+                           
+- Once you verify above details, `LAUNCH` the instance. You will be prompt to enter privet key. Choose existing or create a new pem file.
+    
+- Wait untill the instance goes to running state
+
+- Get the Public IP of the instance
 
 ## How to Create AMI
 ### Workflow
@@ -293,5 +293,3 @@ helm upgrade servicesv2 --install . --namespace icap-adaptation
 ## Test
 
 For testing, try to rebuild a file
-
-
