@@ -20,7 +20,7 @@ spec:
         - name: POD_COUNT
           value: "5"
         - name: PROCESS_IMAGE
-          value: {{ .Values.podcontroller.processimage }}
+          value: {{ .Values.imagestore.process.registry }}{{ .Values.imagestore.process.repository }}:{{ .Values.imagestore.process.tag }}
         - name: MINIO_ENDPOINT
           value: {{ .Values.minio.adaptationRequest.endpoint }}
         - name: MINIO_USER

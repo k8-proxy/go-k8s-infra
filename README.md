@@ -38,9 +38,21 @@ The solution consists of the following components:
 - [Controller Service.](https://github.com/k8-proxy/go-k8s-controller)
 - Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
 
+###
+VM configuration needed for this setup to run smoothly 
+- 4 vCPU
+- 4 GB RAM
+- 50 GB Storage volume
 
-## Setup from scratch
+On aws recommended instance type 
+- t2.xlarge
 
+Perform following steps with sudo user 
+```
+sudo su
+```
+
+## Development Setup
 - Install k8s
 
 ```
@@ -99,7 +111,7 @@ kubectl create ns minio
 ```
 # Install minio 
 helm repo add minio https://helm.min.io/
-helm install --set accessKey=<minio-user>,secretKey=<minio-password> --generate-name minio/minio
+helm install --set accessKey=<minio-user>,secretKey=<minio-password> minio-server minio/minio --namespace minio
 ```
 ```
 # install docker registry credentials
@@ -163,22 +175,12 @@ cd ~
 ```
 ```
 # Clone go-k8s-infra repo
-git clone https://github.com/k8-proxy/go-k8s-infra.git -b azopat-tmp && cd go-k8s-infra/services
+git clone https://github.com/k8-proxy/go-k8s-infra.git -b develop && cd go-k8s-infra/services
 ```
 
 - Scale the existing adaptation service to 0
 ```
 kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
-```
-
-- Export minio tls cert 
-```
-kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | base64 --decode > /tmp/minio-cert.pem
-```
-
-- Import to adaptation service as a configmap 
-```
-kubectl -n icap-adaptation create configmap minio-cert --from-file=/tmp/minio-cert.pem
 ```
 
 - Create minio credentials secret
@@ -193,13 +195,14 @@ helm upgrade servicesv2 --install . --namespace icap-adaptation
 
 - Create bucket on minio by accessing the minio console
 ```
-export POD_NAME=$(kubectl get pods --namespace minio -l "release=minio-1617643223" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace minio -l "release=minio-server" -o jsonpath="{.items[0].metadata.name}")
 
 kubectl port-forward $POD_NAME 9000 --namespace minio
 
 go to browser and access the minio console with http://127.0.0.1:9000 / http://machine-ip:9000 
 
 and credentails is accesskey and secret you have pass when deploying minio .
+once you are in minio UI create an bucket 1) sourcefiles and 2) cleanfiles
 ```
 - Process the Pdf file and check the logs of minio 
 ```
@@ -211,37 +214,82 @@ kubectl logs -f <pod-name> -n icap-adaptation
 ex: kubectl logs -f srv1-94fd6cc74-bqjhs -n icap-adaptation
 ```
 
-## Setup
+## Production Setup
 
-- Deploy a vm from an icap-server AMI with minio installed. Example AMI : ami-099a48891215f2699
+Latest ICAP AMI : ami-08eb467551ac8b5d6
 
-- Scale the existing adaptation service to 0
-```
-kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
-```
 
-- Export minio tls cert 
-```
-kubectl -n minio get secret/minio-tls -o "jsonpath={.data['public\.crt']}" | base64 --decode > /tmp/minio-cert.pem
-```
+- Login to aws console https://aws.amazon.com/console/
 
-- Import to adaptation service as a configmap 
-```
-kubectl -n icap-adaptation create configmap minio-cert --from-file=/tmp/minio-cert.pem
-```
+- Go to EC2 service
 
-- Create minio credentials secret
-```
-kubectl create -n icap-adaptation secret generic minio-credentials --from-literal=username='<minio-user>' --from-literal=password='<minio-password>'
-```
+- Choose Ireland, "eu-west-1" region
 
-- Apply helm chart to create the services
-```
-helm upgrade servicesv2 --install . --namespace icap-adaptation
-```
+- Search for "AMI" under "Images" by entering the ami above
+
+- Click on "Launch" button
+
+- Select below configarature for next steps (available on bottom right corner):
+        
+    - Choose Instance Type         :     t2.2xlarge 
+    - Configure Instance Details   :     The amount of requested instances 
+    - Add Storage (disk space)     :     At least 50G
+    - Add Tags                     :     Put the vm tags
+    - Configure Security Group     :     Choose to select from existing groups, and select *launch-wizard-8*
+                           
+- Once you verify above details, `LAUNCH` the instance. You will be prompt to enter privet key. Choose existing or create a new pem file.
+    
+- Wait untill the instance goes to running state
+
+- Get the Public IP of the instance
+
+## How to Create AMI
+### Workflow
+
+- Create the ami is done by triggering the icap-server(https://github.com/k8-proxy/GW-Releases/actions?query=workflow%3Aicap-server) workflow
+
+- There are 2 main jobs for that workflow:
+    - build-ami
+        - Configure AWS credentials
+        - Setup Packer
+        - Build AMI 
+
+    ![build-ami](imgs/build-ami.png)
+    
+    - deploy-ami
+        - Get current instance ID
+        - Deploy AMI to dev
+        - Run tests on instance
+        - Delete instance(s) that fail
+
+    ![deploy-ami](imgs/deploy-ami.png)
+
+### Workflow Requirements
+    - branch to use workflow from
+    - AWS region(s) where AMI will be created
+    - IP of monitoring server
+
+
+### Workflow Detail
+- [YAML File](https://github.com/k8-proxy/GW-Releases/blob/main/.github/workflows/icap-server.yaml) 
+- build AMI
+    - Configure AWS credentials
+    - Setup [Packer](https://github.com/k8-proxy/vmware-scripts/tree/main/packer)
+    - Build AMI using Packer 
+- deploy AMI
+    - Get current instance ID and other instance IDs with the same name as current instance
+    - Deploy the instance
+    - Run [healthcheck tests](https://github.com/k8-proxy/vmware-scripts/tree/f129ec357284c61206edf36415b1b2ba403bff95/HealthCheck) on the instance
+        - if tests are successful for current instance, all previous instances are terminated
+        - if tests are failed, current instance is terminated and deleted
+
+### Execution
+- Open the link https://github.com/k8-proxy/GW-Releases/actions/workflows/icap-server.yaml
+- Click on "Run workflow" as on the screenshot
+![Run workflow](imgs/run_workflow.png)
+- Once it's completed the AMI will be available in the logs
+![Workflow logs](imgs/workflow_logs.png)
 
 ## Test
 
 For testing, try to rebuild a file
-
-

@@ -47,6 +47,8 @@ spec:
           value: {{ .Values.minio.adaptationRequest.endpoint }}
         - name: MINIO_SOURCE_BUCKET
           value: {{ .Values.minio.adaptationRequest.sourcebucket }}
+        - name: MINIO_CLEAN_BUCKET
+          value: {{ .Values.minio.adaptationRequest.processedbucket }}
         - name: MINIO_ACCESS_KEY
           valueFrom:
             secretKeyRef:
