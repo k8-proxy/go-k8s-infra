@@ -216,7 +216,9 @@ ex: kubectl logs -f srv1-94fd6cc74-bqjhs -n icap-adaptation
 
 ## Production Setup
 
-Latest ICAP AMI : ami-08eb467551ac8b5d6
+* Latest ICAP AMI without DSK API : ami-08eb467551ac8b5d6
+
+* Icap AMI with SDK API : ami-0874e365dfffd43d0
 
 
 - Login to aws console https://aws.amazon.com/console/
@@ -287,6 +289,7 @@ Latest ICAP AMI : ami-08eb467551ac8b5d6
 - Open the link https://github.com/k8-proxy/GW-Releases/actions/workflows/icap-server.yaml
 - Click on "Run workflow" as on the screenshot
 ![Run workflow](imgs/run_workflow.png)
+- If you are creating an AMI with SDK, select the branch : minio-with-sdk , if you are creating icap ami without sdk api select branch minio
 - Once it's completed the AMI will be available in the logs
 ![Workflow logs](imgs/workflow_logs.png)
 
