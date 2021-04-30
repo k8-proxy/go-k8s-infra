@@ -16,12 +16,17 @@ spec:
       - name: target-vol
         persistentVolumeClaim:
           claimName: glasswalltarget-pvc
+      - name: transactions-vol
+        persistentVolumeClaim:
+          claimName: pvc-transaction-query-service
       containers:
       - name: srv2
         image: {{ .Values.imagestore.srv2.registry }}{{ .Values.imagestore.srv2.repository }}:{{ .Values.imagestore.srv2.tag }}
         volumeMounts:
         - mountPath: {{ .Values.volumemountpath.target }}
           name: target-vol
+        - mountPath: {{ .Values.volumemountpath.transactions }}
+          name: transactions-vol
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -31,6 +36,8 @@ spec:
           value: {{ .Values.volumemountpath.source }}
         - name: OUTPUT_MOUNT
           value: {{ .Values.volumemountpath.target }}
+        - name: TRANSACTION_STORE_PATH
+          value: {{ .Values.volumemountpath.transactions }}
         - name: MESSAGE_BROKER_USER
           valueFrom:
             secretKeyRef:
