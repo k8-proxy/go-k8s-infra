@@ -37,7 +37,7 @@ imagestore:
   process:
     registry: ""
     repository: k8serviceaccount/go-k8s-process
-    tag: latest
+    tag: develop
 volumemountpath:
   source: "/var/source"
   target: "/var/target"
