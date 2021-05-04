@@ -287,9 +287,9 @@ ex: kubectl logs -f srv1-94fd6cc74-bqjhs -n icap-adaptation
 
 ### Execution
 - Open the link https://github.com/k8-proxy/GW-Releases/actions/workflows/icap-server.yaml
+- If you are creating an AMI with SDK, select the branch : minio-with-sdk , if you are creating icap ami without sdk api select branch minio
 - Click on "Run workflow" as on the screenshot
 ![Run workflow](imgs/run_workflow.png)
-- If you are creating an AMI with SDK, select the branch : minio-with-sdk , if you are creating icap ami without sdk api select branch minio
 - Once it's completed the AMI will be available in the logs
 ![Workflow logs](imgs/workflow_logs.png)
 
