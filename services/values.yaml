@@ -9,6 +9,9 @@ podcontroller:
 srv1:
   name: srv1
   replicas: 1
+srv:
+  name: srv1
+  replicas: 1
 srv2:
   name: srv2
   replicas: 1
@@ -25,6 +28,10 @@ imagestore:
   podcontroller:
     registry: ""
     repository: k8serviceaccount/go-k8s-controller
+    tag: main
+  srv:
+    registry: ""
+    repository: k8serviceaccount/go-k8s-srv
     tag: main
   srv1:
     registry: ""
