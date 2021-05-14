@@ -1,27 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.srv1.name }}
+  name: {{ .Values.srv.name }}
 spec:
-  replicas: {{ .Values.srv1.replicas }}
+  replicas: {{ .Values.srv.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.srv1.name }}
+      app: {{ .Values.srv.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.srv1.name }}
+        app: {{ .Values.srv.name }}
     spec:
       volumes:
       - name: source-vol
         persistentVolumeClaim:
           claimName: glasswallsource-pvc
+      - name: target-vol
+        persistentVolumeClaim:
+          claimName: glasswalltarget-pvc
       containers:
-      - name: srv1
-        image: {{ .Values.imagestore.srv1.registry }}{{ .Values.imagestore.srv1.repository }}:{{ .Values.imagestore.srv1.tag }}
+      - name: srv
+        image: {{ .Values.imagestore.srv.registry }}{{ .Values.imagestore.srv.repository }}:{{ .Values.imagestore.srv.tag }}
         volumeMounts:
         - mountPath: {{ .Values.volumemountpath.source }}
           name: source-vol
+        - mountPath: {{ .Values.volumemountpath.target }}
+          name: target-vol
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -29,6 +34,8 @@ spec:
               fieldPath: metadata.namespace
         - name: INPUT_MOUNT
           value: {{ .Values.volumemountpath.source }}
+        - name: OUTPUT_MOUNT
+          value: {{ .Values.volumemountpath.target }}
         - name: MESSAGE_BROKER_USER
           valueFrom:
             secretKeyRef:
