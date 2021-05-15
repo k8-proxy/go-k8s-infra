@@ -32,8 +32,7 @@ The solution provides the following enhancements:
 
 ### Components
 The solution consists of the following components:
-- [Service 1](https://github.com/k8-proxy/go-k8s-srv1)
-- [Service 2](https://github.com/k8-proxy/go-k8s-srv2)
+- [Service 1](https://github.com/k8-proxy/go-k8s-srv)
 - [Processing Service.](https://github.com/k8-proxy/go-k8s-process)
 - [Controller Service.](https://github.com/k8-proxy/go-k8s-controller)
 - Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
@@ -211,7 +210,7 @@ c-icap-client -i <Icap-server-ip/machine-ip> -p 1344 -s gw_rebuild -f ./sample.p
 # check logs of service deploy in icap-adaptation namespace
 
 kubectl logs -f <pod-name> -n icap-adaptation
-ex: kubectl logs -f srv1-94fd6cc74-bqjhs -n icap-adaptation
+ex: kubectl logs -f srv-94fd6cc74-bqjhs -n icap-adaptation
 ```
 
 ## Production Setup

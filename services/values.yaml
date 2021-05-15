@@ -11,7 +11,7 @@ srv1:
   name: srv1
   replicas: 1
 srv:
-  name: srv1
+  name: srv
   replicas: 1
 srv2:
   name: srv2
