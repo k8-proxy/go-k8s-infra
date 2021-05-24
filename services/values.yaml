@@ -23,16 +23,20 @@ imagestore:
   podcontroller:
     registry: ""
     repository: k8serviceaccount/go-k8s-controller
-    tag: main
+    tag: develop
   srv:
     registry: ""
     repository: k8serviceaccount/go-k8s-srv
-    tag: main
+    tag: develop
   process:
     registry: ""
     repository: k8serviceaccount/go-k8s-process
-    tag: main
+    tag: develop
 volumemountpath:
   source: "/var/source"
   target: "/var/target"
   transactions: /mnt/transactions
+jaeger:
+  host: "jaeger.jaeger.svc.cluster.local"
+  port: "6831"
+  on: "true"
