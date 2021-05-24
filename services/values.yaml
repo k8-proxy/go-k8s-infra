@@ -36,3 +36,7 @@ volumemountpath:
   source: "/var/source"
   target: "/var/target"
   transactions: /mnt/transactions
+jaeger:
+  host: "jaeger.jaeger.svc.cluster.local"
+  port: "6831"
+  on: "true"

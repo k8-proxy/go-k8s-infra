@@ -106,6 +106,7 @@ kubectl create ns icap-adaptation
 kubectl create ns management-ui
 kubectl create ns icap-ncfs
 kubectl create ns minio
+kubectl create ns jaeger
 ```
 ```
 # Install minio 
@@ -176,12 +177,15 @@ cd ~
 # Clone go-k8s-infra repo
 git clone https://github.com/k8-proxy/go-k8s-infra.git -b develop && cd go-k8s-infra/services
 ```
-
 - Scale the existing adaptation service to 0
 ```
 kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
 ```
-
+```
+# Install jaeger-agent
+cd ../jaeger-agent
+kubectl apply -f jaeger.yaml
+```
 - Create minio credentials secret
 ```
 kubectl create -n icap-adaptation secret generic minio-credentials --from-literal=username='<minio-user>' --from-literal=password='<minio-password>'
