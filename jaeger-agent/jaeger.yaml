@@ -88,4 +88,4 @@ spec:
   selector:
     com.service: jaeger-app
   sessionAffinity: None
-  type: ClusterIP
+  type: LoadBalancer
