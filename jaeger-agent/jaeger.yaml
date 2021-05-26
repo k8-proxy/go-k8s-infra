@@ -74,7 +74,7 @@ spec:
     protocol: TCP
     targetPort: 5778
   - name: query-http
-    port: 80
+    port: 9001
     protocol: TCP
     targetPort: 16686
   - name: jaeger-collector-http
