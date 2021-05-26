@@ -73,10 +73,10 @@ spec:
     port: 5778
     protocol: TCP
     targetPort: 5778
-  - name: query-http
-    port: 9001
-    protocol: TCP
-    targetPort: 16686
+#  - name: query-http
+#    port: 9001
+#    protocol: TCP
+#    targetPort: 16686
   - name: jaeger-collector-http
     port: 14268
     protocol: TCP
@@ -85,6 +85,23 @@ spec:
     port: 9411
     protocol: TCP
     targetPort: 9411
+  selector:
+    com.service: jaeger-app
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-query
+  namespace: jaeger
+spec:
+  ports:
+  - name: query-http
+    port: 9001
+    protocol: TCP
+    targetPort: 16686
   selector:
     com.service: jaeger-app
   sessionAffinity: None
