@@ -6,11 +6,9 @@ podcontroller:
   saname: pod-controller-sa
   replicas: 1
   processimage: k8serviceaccount/go-k8s-process
-srv1:
-  name: srv1
-  replicas: 1
-srv2:
-  name: srv2
+  pod_count: 5
+srv:
+  name: srv
   replicas: 1
 queue:
   adaptationRequest:
@@ -25,20 +23,20 @@ imagestore:
   podcontroller:
     registry: ""
     repository: k8serviceaccount/go-k8s-controller
-    tag: main
-  srv1:
+    tag: develop
+  srv:
     registry: ""
-    repository: k8serviceaccount/go-k8s-srv1
-    tag: main
-  srv2:
-    registry: ""
-    repository: k8serviceaccount/go-k8s-srv2
-    tag: main
+    repository: k8serviceaccount/go-k8s-srv
+    tag: develop
   process:
     registry: ""
     repository: k8serviceaccount/go-k8s-process
-    tag: main
+    tag: develop
 volumemountpath:
   source: "/var/source"
   target: "/var/target"
   transactions: /mnt/transactions
+jaeger:
+  host: "jaeger.jaeger.svc.cluster.local"
+  port: "6831"
+  on: "true"

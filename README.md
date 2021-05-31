@@ -32,8 +32,7 @@ The solution provides the following enhancements:
 
 ### Components
 The solution consists of the following components:
-- [Service 1](https://github.com/k8-proxy/go-k8s-srv1)
-- [Service 2](https://github.com/k8-proxy/go-k8s-srv2)
+- [Service 1](https://github.com/k8-proxy/go-k8s-srv)
 - [Processing Service.](https://github.com/k8-proxy/go-k8s-process)
 - [Controller Service.](https://github.com/k8-proxy/go-k8s-controller)
 - Components related to ICAP server, RabbitMQ, transaction logs , Management UI and similar (From here: https://github.com/k8-proxy/icap-infrastructure).
@@ -107,6 +106,7 @@ kubectl create ns icap-adaptation
 kubectl create ns management-ui
 kubectl create ns icap-ncfs
 kubectl create ns minio
+kubectl create ns jaeger
 ```
 ```
 # Install minio 
@@ -175,14 +175,17 @@ cd ~
 ```
 ```
 # Clone go-k8s-infra repo
-git clone https://github.com/k8-proxy/go-k8s-infra.git -b develop && cd go-k8s-infra/services
+git clone https://github.com/k8-proxy/go-k8s-infra.git -b develop && cd go-k8s-infra
 ```
-
 - Scale the existing adaptation service to 0
 ```
 kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
 ```
-
+```
+# Install jaeger-agent
+cd jaeger-agent
+kubectl apply -f jaeger.yaml
+```
 - Create minio credentials secret
 ```
 kubectl create -n icap-adaptation secret generic minio-credentials --from-literal=username='<minio-user>' --from-literal=password='<minio-password>'
@@ -190,6 +193,7 @@ kubectl create -n icap-adaptation secret generic minio-credentials --from-litera
 
 - Apply helm chart to create the services
 ```
+cd ../services
 helm upgrade servicesv2 --install . --namespace icap-adaptation
 ```
 
@@ -211,7 +215,7 @@ c-icap-client -i <Icap-server-ip/machine-ip> -p 1344 -s gw_rebuild -f ./sample.p
 # check logs of service deploy in icap-adaptation namespace
 
 kubectl logs -f <pod-name> -n icap-adaptation
-ex: kubectl logs -f srv1-94fd6cc74-bqjhs -n icap-adaptation
+ex: kubectl logs -f srv-94fd6cc74-bqjhs -n icap-adaptation
 ```
 
 ## Production Setup
