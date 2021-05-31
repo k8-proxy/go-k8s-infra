@@ -227,7 +227,7 @@ ex: kubectl logs -f srv-94fd6cc74-bqjhs -n icap-adaptation
 
 - Login to aws console https://aws.amazon.com/console/
 
-- Go to EC2 service
+- Go to EC2 service.
 
 - Choose Ireland, "eu-west-1" region
 
