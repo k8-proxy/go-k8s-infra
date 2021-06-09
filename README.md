@@ -185,6 +185,7 @@ kubectl -n icap-adaptation scale --replicas=0 deployment/adaptation-service
 # Install k8s-dashboard
 kubectl apply -f k8s-dash
 ```
+```
 # Install jaeger-agent
 cd jaeger-agent
 kubectl apply -f jaeger.yaml
@@ -216,11 +217,10 @@ once you are in minio UI create an bucket 1) sourcefiles and 2) cleanfiles
 c-icap-client -i <Icap-server-ip/machine-ip> -p 1344 -s gw_rebuild -f ./sample.pdf -o ./reb.pdf -v
 
 # check logs of service deploy in icap-adaptation namespace
-
+```
 kubectl logs -f <pod-name> -n icap-adaptation
 ex: kubectl logs -f srv-94fd6cc74-bqjhs -n icap-adaptation
 ```
-
 ```
 # get access token for kubernetes dashboard
 kubectl get secret 
