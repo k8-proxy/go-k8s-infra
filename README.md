@@ -215,15 +215,16 @@ once you are in minio UI create an bucket 1) sourcefiles and 2) cleanfiles
 - Process the Pdf file and check the logs of minio 
 ```
 c-icap-client -i <Icap-server-ip/machine-ip> -p 1344 -s gw_rebuild -f ./sample.pdf -o ./reb.pdf -v
-
-# check logs of service deploy in icap-adaptation namespace
 ```
+```
+# check logs of service deploy in icap-adaptation namespace
 kubectl logs -f <pod-name> -n icap-adaptation
 ex: kubectl logs -f srv-94fd6cc74-bqjhs -n icap-adaptation
 ```
 ```
 # get access token for kubernetes dashboard
 kubectl get secret 
+
 kubectl describe secret skooner-sa-token-xxxxx
 ```
 ## Production Setup
