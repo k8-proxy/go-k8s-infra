@@ -23,15 +23,15 @@ imagestore:
   podcontroller:
     registry: ""
     repository: k8serviceaccount/go-k8s-controller
-    tag: develop
+    tag: v0.3.0
   srv:
     registry: ""
     repository: k8serviceaccount/go-k8s-srv
-    tag: develop
+    tag: v0.3.0
   process:
     registry: ""
     repository: k8serviceaccount/go-k8s-process
-    tag: develop
+    tag: v0.4.0
 volumemountpath:
   source: "/var/source"
   target: "/var/target"
