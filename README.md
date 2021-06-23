@@ -253,6 +253,10 @@ kubectl describe secret skooner-sa-token-xxxxx
 <td> icap service </td>
 <td> 1344 </td>
 </tr>
+<tr>
+<td> Kubernetes Dashboard </td>
+<td> 9090 </td>
+</tr>
 </table>
 ## Production Setup
 
