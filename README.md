@@ -227,6 +227,37 @@ kubectl get secret
 
 kubectl describe secret skooner-sa-token-xxxxx
 ```
+## Services and Expose Port.
+<table>
+<tr>
+<td> Service Name </td>
+<td> Port Number </td>
+</tr>
+<tr>
+<td> RabbitMQ UI </td>
+<td> 15672 </td>
+</tr>
+<tr>
+<td> Minio </td>
+<td> 9000 </td>
+</tr>
+<tr> 
+<td> jaeger </td>
+<td> 9001 </td>
+</tr>
+<tr>
+<td> Proxy Rest Api </td>
+<td> 80 </td>
+</tr>
+<tr>
+<td> icap service </td>
+<td> 1344 </td>
+</tr>
+<tr>
+<td> Kubernetes Dashboard </td>
+<td> 9090 </td>
+</tr>
+</table>
 ## Production Setup
 
 * Latest ICAP AMI without DSK API : ami-08eb467551ac8b5d6
