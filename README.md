@@ -266,15 +266,10 @@ kubectl describe secret skooner-sa-token-xxxxx
 
 
 - Login to aws console https://aws.amazon.com/console/
-
 - Go to EC2 service.
-
 - Choose Ireland, "eu-west-1" region
-
 - Search for "AMI" under "Images" by entering the ami above
-
 - Click on "Launch" button
-
 - Select below configarature for next steps (available on bottom right corner):
         
     - Choose Instance Type         :     t2.2xlarge 
@@ -282,12 +277,34 @@ kubectl describe secret skooner-sa-token-xxxxx
     - Add Storage (disk space)     :     At least 50G
     - Add Tags                     :     Put the vm tags
     - Configure Security Group     :     Choose to select from existing groups, and select *launch-wizard-8*
-                           
 - Once you verify above details, `LAUNCH` the instance. You will be prompt to enter privet key. Choose existing or create a new pem file.
-    
 - Wait untill the instance goes to running state
-
 - Get the Public IP of the instance
+- Access **Minio** on port **9000**.
+
+    - ![image](https://user-images.githubusercontent.com/58347752/123562541-97258800-d7af-11eb-9fb0-64acf8ab4a07.png)
+    - Access Key:
+    - Secret Key:
+- Access **RabbitMQ** on port **15672**.
+
+    - ![image](https://user-images.githubusercontent.com/58347752/123562556-ac9ab200-d7af-11eb-8d45-17b99d6d104b.png)
+    - Username: guest
+    - Password: 
+- Access **Jaeger** on port **9001**.
+
+    - ![image](https://user-images.githubusercontent.com/58347752/123562588-eec3f380-d7af-11eb-8659-21fca27de319.png)
+- Access **K8Dash** on port **9090**. 
+
+    - ![image](https://user-images.githubusercontent.com/58347752/123562122-ec13cf00-d7ac-11eb-9bf3-51199464403e.png)
+    - Access token:
+
+        - Login to the server and run `kubectl get secrets`
+        - Identify pod name that's named **skooner-sa-token-XXXXX** (where XXXXX part of the name changes)
+        - run `kubectl describe secret skooner-sa-token-XXXXX`
+        - copy the printed token and past it in k8dash UI to access it.
+        - ![image-20210628010438539](/home/nader/.config/Typora/typora-user-images/image-20210628010438539.png)
+
+
 
 ## How to Create AMI
 ### Workflow
