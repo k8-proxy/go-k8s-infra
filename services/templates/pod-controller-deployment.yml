@@ -49,9 +49,3 @@ spec:
           value: {{ .Values.jaeger.port | quote }}
         - name: JAEGER_AGENT_ON
           value: "true"
-        - name: JAEGER_AGENT_HOST
-          value: {{ .Values.jaeger.host }}
-        - name: JAEGER_AGENT_PORT
-          value: {{ .Values.jaeger.port | quote }}
-        - name: JAEGER_AGENT_ON
-          value: "true"
