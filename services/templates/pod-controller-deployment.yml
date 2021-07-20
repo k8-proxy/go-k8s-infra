@@ -33,6 +33,22 @@ spec:
             secretKeyRef:
               key: password
               name: minio-credentials
+        - name: MESSAGE_BROKER_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: rabbitmq-service-default-user
+        - name: MESSAGE_BROKER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: rabbitmq-service-default-user
+        - name: JAEGER_AGENT_HOST
+          value: {{ .Values.jaeger.host }}
+        - name: JAEGER_AGENT_PORT
+          value: {{ .Values.jaeger.port | quote }}
+        - name: JAEGER_AGENT_ON
+          value: "true"
         - name: JAEGER_AGENT_HOST
           value: {{ .Values.jaeger.host }}
         - name: JAEGER_AGENT_PORT
