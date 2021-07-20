@@ -19,6 +19,10 @@ spec:
         env:
         - name: POD_COUNT
           value: "{{ .Values.podcontroller.pod_count }}"
+        - name: PROCESS_POD_MEMORY_LIMIT
+          value: "{{ .Values.podcontroller.process_pod_memory_limit }}"
+        - name: PROCESS_POD_MEMORY_REQUEST
+          value: "{{ .Values.podcontroller.process_pod_memory_request }}"
         - name: PROCESS_IMAGE
           value: {{ .Values.imagestore.process.registry }}{{ .Values.imagestore.process.repository }}:{{ .Values.imagestore.process.tag }}
         - name: MINIO_ENDPOINT
