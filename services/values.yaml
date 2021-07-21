@@ -6,7 +6,7 @@ podcontroller:
   saname: pod-controller-sa
   replicas: 1
   processimage: k8serviceaccount/go-k8s-process
-  pod_count: 25
+  pod_count: 50
   process_pod_memory_limit: 1000Mi
   process_pod_memory_request: 300Mi
 srv:
