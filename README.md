@@ -20,6 +20,8 @@ Go based Kubernetes infrastructure, providing an ICAP based solution to process 
 
 The work here is a continuation and enhancement over: https://github.com/k8-proxy/icap-infrastructure).
 
+This repo uses rabbitmq-service-default-user secret which is created over : https://github.com/k8-proxy/icap-infrastructure
+
 ## Version v0.x:
 
 ### Solution diagram
